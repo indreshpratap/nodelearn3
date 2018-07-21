@@ -1,4 +1,5 @@
 var pgdb = require('../../db/pgdb');
+var { OK, ERROR } = require("../../../utils/route.util");
 
 var {
     Batch,
@@ -9,8 +10,9 @@ var {
 module.exports = {
     search: search,
     newGroup: newGroup,
-    createBatch:createBatch,
-    registerStudent:registerStudent
+    createBatch: createBatch,
+    listBatch: listBatch,
+    registerStudent: registerStudent
 
 }
 
@@ -50,19 +52,27 @@ function newGroup(req, res) {
 }
 
 
-function createBatch(req,res) {
+function createBatch(req, res) {
     var body = req.body;
     body.active = true;
     body.startDate = new Date();
-    
+
     var batch = new Batch(body);
-    batch.save((err)=>{
-        if(err) res.json({status:false,msg:err.message});
+    batch.save((err) => {
+        if (err) ERROR(res, err); // res.json({status:false,msg:err.message});
         else {
-            res.json({status:true,data:batch});
+            OK(res, batch);
         }
     })
 }
-function registerStudent(req,res){
+
+function listBatch(req, res) {
+    Batch.find({ active: true }, '_id name', function(err, items) {
+        if (err) ERROR(res, err);
+        else OK(res, items);
+    })
+}
+
+function registerStudent(req, res) {
 
 }

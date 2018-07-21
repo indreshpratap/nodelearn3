@@ -9,4 +9,5 @@ routes.get('/search',ctrl.search);
 routes.get("/new-group/:groupname",ctrl.newGroup);
 
 routes.post('/create-batch',ctrl.createBatch);
+routes.get('/list-batch',ctrl.listBatch);
 routes.post('/register-student',ctrl.registerStudent);
